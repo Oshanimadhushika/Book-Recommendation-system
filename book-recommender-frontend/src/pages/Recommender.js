@@ -9,35 +9,7 @@ const Recommender = () => {
   const [ratings, setRatings] = useState([]);
   const [posterUrls, setPosterUrls] = useState([]);
 
-  // useEffect(() => {
-  //   console.log("in useeffecttttt")
-  //   const fetchData = async () => {
-  //     console.log("in fetchdata")
-
-  //     const response = await fetch('/api/get_book_names', {
-  //       headers: {
-  //         'Cache-Control': 'no-cache'
-  //       }
-  //     });
-  //     console.log("after response", response);
-
-  //       if (!response.ok) {
-  //         console.error('Error fetching book names. Status:', response.status);
-  //       } else {
-  //         console.log("in elseee")
-  //         try {
-  //           const data = await response.json();
-  //           console.log("data", data);
-  //           setBookNames(data.book_names);
-  //           console.log('Received book names:', data.book_names);
-  //         } catch (error) {
-  //           console.error('Error parsing JSON:', error);
-  //         }
-  //       }
-  //   };
-
-  //   fetchData();
-  // }, []);
+  
 
   useEffect(() => {
     const fetchData = async () => {
