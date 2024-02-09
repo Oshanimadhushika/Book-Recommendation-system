@@ -168,10 +168,10 @@ def recommend_book(book_name):
             books_list.append(j)
             ratings_list.append(final_rating[final_rating['title'] == j]['num_of_rating'].values[0])  
             
-        books_list = list(books_list)
-        ratings_list = list(ratings_list)
-
-    return books_list, ratings_list, poster_url
+        # books_list = list(books_list)
+        ratings_list = [int(rating) for rating in ratings_list]
+        
+        return books_list, ratings_list, poster_url
 
 
 
