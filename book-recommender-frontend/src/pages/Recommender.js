@@ -14,7 +14,6 @@ const Recommender = () => {
   //   const fetchData = async () => {
   //     console.log("in fetchdata")
 
-     
   //     const response = await fetch('/api/get_book_names', {
   //       headers: {
   //         'Cache-Control': 'no-cache'
@@ -36,93 +35,67 @@ const Recommender = () => {
   //         }
   //       }
   //   };
-  
+
   //   fetchData();
   // }, []);
-  
+
   useEffect(() => {
     const fetchData = async () => {
-        console.log("use effecttt");
-        try {
-            const response = await fetch('http://127.0.0.1:5000/get_book_names');
-            console.log("response", response);
-            // const text = await response.text();
-            // console.log("response text", text);
+      console.log("use effecttt");
+      try {
+        const response = await fetch("http://127.0.0.1:5000/get_book_names");
+        console.log("response", response);
+        // const text = await response.text();
+        // console.log("response text", text);
 
-            if (!response.ok) {
-              console.log("in if close");
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            console.log("dataa", data);
-            setBookNames(data.book_names);
-            console.log('Received book names:', data.book_names);
-        } catch (error) {
-            console.error('Error fetching book names:', error);
+        if (!response.ok) {
+          console.log("in if close");
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        const data = await response.json();
+        console.log("dataa", data);
+        setBookNames(data.book_names);
+        console.log("Received book names:", data.book_names);
+      } catch (error) {
+        console.error("Error fetching book names:", error);
+      }
     };
 
     fetchData();
-}, []);
+  }, []);
 
+  const handleShowRecommendation = async () => {
+    console.log("In handleShow");
 
+    try {
+      const response = await fetch("http://127.0.0.1:5000/recommend_book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ selected_book: selectedBook }),
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
+      const data = await response.json();
 
+      console.log("Data:", data);
 
-  
-const handleShowRecommendation = async () => {
-  console.log("In handleShow");
+      setRecommendedBooks(data.recommended_books);
+      console.log("book recommnd:", data.recommended_books);
 
-  try {
-    const response = await fetch("http://127.0.0.1:5000/recommend_book", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ selected_book: selectedBook }),
-        })
+      setRatings(data.ratings);
+      console.log("ratingss:", data.ratings);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      setPosterUrls(data.poster_urls);
+      console.log("urllll:", data.poster_urls);
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
     }
-
-    const data = await response.json();
-
-    console.log("Data:", data);
-
-    setRecommendedBooks(data.recommended_books);
-    console.log("book recommnd:", data.recommended_books);
-
-    setRatings(data.ratings);
-    console.log("ratingss:", data.ratings);
-
-    setPosterUrls(data.poster_urls);
-    console.log("urllll:", data.poster_urls);
-
-  } catch (error) {
-    console.error("Error fetching recommendations:", error);
-  }
-};
-
-
-// const handleShowRecommendation = () => {
-//   fetch(" http://127.0.0.1:5000/recommend_books", { 
-//       method: "POST",
-//       headers: {
-//           "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ selected_book: selectedBook }),
-//   })
-//       .then(response => response.json())
-//       .then(data => {
-//           setRecommendedBooks(data.recommended_books);
-//           setRatings(data.ratings);
-//           setPosterUrls(data.poster_urls);
-//       })
-//       .catch(error => console.error("Error fetching recommendations:", error));
-// };
-
+  };
 
   return (
     <div className="bg-black h-full mb-0">
@@ -134,12 +107,12 @@ const handleShowRecommendation = async () => {
         className="w-2/3 h-10 mt-5 ml-4"
         value={selectedBook}
         onChange={(e) => setSelectedBook(e.target.value)}
-        
       >
-        
-       <option value="" disabled>Select  a book</option>
+        <option value="" disabled>
+          Select a book
+        </option>
         {bookNames.map((book) => (
-          <option key={book} value={book} >
+          <option key={book} value={book}>
             {book}
           </option>
         ))}
@@ -152,32 +125,31 @@ const handleShowRecommendation = async () => {
         Show Recommendation
       </button>
 
-      <div>
+      <div className="mt-4 grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 bg-transparent">
         {recommendedBooks.map((book, index) => (
           <div
             key={index}
-            className="flex justify-end items-end  rounded-md mt-4 left-1"
+            className="flex flex-col items-center rounded-md mt-4"
           >
-            <p>{book}</p>
+            <p className="text-white font-semibold">{book}</p>
             <img
-              style={{ height: "550px" }}
               src={posterUrls[index]}
               alt="Book Image"
-              className="object-cover w-2/5 mb-6 "
+              className="object-cover w-2/5 mb-3 mt-3"
             />
-            <p>{`Rating: ${ratings[index]}`}</p>
+            <p className="text-white font-semibold">{`Rating: ${ratings[index]}`}</p>
           </div>
         ))}
       </div>
 
-      <div className="flex justify-end items-end  rounded-md mt-4 left-1 ">
+      {/* <div className="flex justify-end items-end  rounded-md mt-4 left-1 ">
         <img
           style={{ height: "550px" }}
           src={Book}
           alt="Book Image"
           className="object-cover w-2/5 mb-6 flex justify-end "
         />
-      </div>
+      </div> */}
     </div>
   );
 };
