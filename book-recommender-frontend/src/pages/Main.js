@@ -85,11 +85,11 @@ const Main = () => {
             browsing experience.
           </li>
 
-          <li>
+          {/* <li>
             <span className="font-bold">Discover Hidden Gems:</span> Uncover
             hidden gems and lesser-known titles that might become your new
             favorites.
-          </li>
+          </li> */}
         </ul>
 
         {/* <button className="flex justify-center items-center mx-auto p-3 bg-white text-black font-semibold mt-3" >hhhhhhhhh</button> */}

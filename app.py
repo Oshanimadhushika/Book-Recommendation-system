@@ -128,8 +128,7 @@ import numpy as np
 
 
 app = Flask(__name__)
-CORS(app)
-
+CORS(app, origins='*')
 
 st.header('Book Recommender System Using Machine Learning')
 model = pickle.load(open('artifacts/model.pkl','rb'))
@@ -168,23 +167,13 @@ def recommend_book(book_name):
         for j in books:
             books_list.append(j)
             ratings_list.append(final_rating[final_rating['title'] == j]['num_of_rating'].values[0])  
+            
+        books_list = list(books_list)
+        ratings_list = list(ratings_list)
 
     return books_list, ratings_list, poster_url
 
-# def recommend_book(selected_book):
-#     books_list, ratings_list, poster_urls = recommend_book(selected_book)
 
-#     recommended_books_list = list(books_list)
-#     ratings_list = list(ratings_list)
-#     poster_urls_list = list(poster_urls)
-
-#     response_data = {
-#         'recommended_books': recommended_books_list,
-#         'ratings': ratings_list,
-#         'poster_urls': poster_urls_list
-#     }
-
-#     return response_data
 
 
 @app.route('/get_book_names', methods=['GET'])
@@ -194,19 +183,28 @@ def get_book_names():
 
 
 
-@app.route('/recommend_books', methods=['POST'])
+@app.route('/recommend_book', methods=['POST'])
 def recommend_books():
-    data = request.text()
+    data = request.get_json(force=True)  
     selected_book = data.get('selected_book')
     recommended_books, ratings, poster_urls = recommend_book(selected_book)
 
+    recommended_books_list = list(recommended_books)
+    ratings_list = list(ratings)
+    poster_urls_list = list(poster_urls)
+
     response_data = {
-        'recommended_books': recommended_books,
-        'ratings': ratings,
-        'poster_urls': poster_urls
+        'recommended_books': recommended_books_list,
+        'ratings': ratings_list,
+        'poster_urls': poster_urls_list
     }
 
     return jsonify(response_data)
+#     return jsonify({
+#     'recommended_books': recommended_books,
+#     'ratings': ratings,
+#     'poster_urls': poster_urls
+# })
 
 if __name__ == '__main__':
     app.run(debug=True)

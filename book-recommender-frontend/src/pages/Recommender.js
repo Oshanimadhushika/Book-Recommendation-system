@@ -68,43 +68,20 @@ const Recommender = () => {
 
 
 
-// const handleShowRecommendation = async () => {
-//   try {
-//     const response = await fetch("http://127.0.0.1:5000/recommend_books", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ selected_book: selectedBook }),
-//     });
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-
-//     const data = await response.json();
-//     setRecommendedBooks(data.recommended_books);
-//     setRatings(data.ratings);
-//     setPosterUrls(data.poster_urls);
-//   } catch (error) {
-//     console.error("Error fetching recommendations:", error);
-//   }
-// };
 
   
 const handleShowRecommendation = async () => {
   console.log("In handleShow");
 
   try {
-    const response = await fetch("http://127.0.0.1:5000/recommend_books", {
+    const response = await fetch("http://127.0.0.1:5000/recommend_book", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ selected_book: selectedBook }),
-    });
-
-    console.log("Response:", response);
+        })
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -159,6 +136,7 @@ const handleShowRecommendation = async () => {
         onChange={(e) => setSelectedBook(e.target.value)}
         
       >
+        
        <option value="" disabled>Select  a book</option>
         {bookNames.map((book) => (
           <option key={book} value={book} >
@@ -185,7 +163,7 @@ const handleShowRecommendation = async () => {
               style={{ height: "550px" }}
               src={posterUrls[index]}
               alt="Book Image"
-              className="object-cover w-2/5 mb-6"
+              className="object-cover w-2/5 mb-6 "
             />
             <p>{`Rating: ${ratings[index]}`}</p>
           </div>
@@ -197,7 +175,7 @@ const handleShowRecommendation = async () => {
           style={{ height: "550px" }}
           src={Book}
           alt="Book Image"
-          className="object-cover w-2/5 mb-6 "
+          className="object-cover w-2/5 mb-6 flex justify-end "
         />
       </div>
     </div>
