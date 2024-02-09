@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: src
+Version: 0.0.1
+Summary: A small package for Book Recommender System
+Home-page: https://github.com/Oshanimadhushika/Book-Recommendation-system
+Author: entbappy
+Author-email: oshanimadhushika12@gmail.com
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: streamlit
+Requires-Dist: numpy
+
+Project: Book Recommender System Using Machine Learning! | Collaborative Filtering Based
